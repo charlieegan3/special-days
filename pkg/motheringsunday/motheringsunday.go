@@ -13,7 +13,10 @@ func MotheringSunday(year int) (time.Time, error) {
 		return easterSunday, fmt.Errorf("failed to determine easter date")
 	}
 
-	motheringSunday := easterSunday.Add(-21 * 24 * time.Hour).Add(time.Hour)
+	// eastertime uses localtime
+	_, offset := time.Now().Zone()
+
+	motheringSunday := easterSunday.Add(-21 * 24 * time.Hour).Add(time.Duration(offset) * time.Second)
 
 	return motheringSunday.In(time.UTC), nil
 }
